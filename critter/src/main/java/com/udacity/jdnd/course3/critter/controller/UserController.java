@@ -4,6 +4,7 @@ import com.udacity.jdnd.course3.critter.dto.CustomerDTO;
 import com.udacity.jdnd.course3.critter.dto.EmployeeDTO;
 import com.udacity.jdnd.course3.critter.dto.EmployeeRequestDTO;
 import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.exception.PetNotFoundException;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.service.UserService;
@@ -79,7 +80,16 @@ public class UserController {
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        Employee e = userService.findEmployee(employeeDTO.getId()).orElseGet(Employee::new);
+        BeanUtils.copyProperties(employeeDTO, e, "id");
+        e = userService.save(e);
+        return transformEmployeeEntityToDTO(e);
+    }
+
+    private EmployeeDTO transformEmployeeEntityToDTO(Employee employee) {
+        EmployeeDTO dto = new EmployeeDTO();
+        BeanUtils.copyProperties(employee, dto);
+        return dto;
     }
 
     @PostMapping("/employee/{employeeId}")
