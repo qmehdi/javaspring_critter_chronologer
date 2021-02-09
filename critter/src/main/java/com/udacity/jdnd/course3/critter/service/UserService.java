@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.service;
 
 import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.exception.PetNotFoundException;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
@@ -21,10 +22,17 @@ public class UserService {
     private CustomerRepository customerRepository;
     @Autowired
     private PetRepository petRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     // This is a wrapper method to simply make the findById method in the CrudRepository available to the controller. We put this here in the Service class because the controller should never talk to the Repository directly.
     public Optional<Customer> findCustomer(Long id) {
         return customerRepository.findById(id);
+    }
+
+    // Wrapper method for employee find by id
+    public Optional<Employee> findEmployee(Long id) {
+        return employeeRepository.findById(id);
     }
 
     @Transactional
@@ -41,5 +49,10 @@ public class UserService {
 
         // SAVE the customer object into the Db
         return customerRepository.save(customer);
+    }
+
+    @Transactional
+    public Employee save(Employee e) {
+        return employeeRepository.save(e);
     }
 }
