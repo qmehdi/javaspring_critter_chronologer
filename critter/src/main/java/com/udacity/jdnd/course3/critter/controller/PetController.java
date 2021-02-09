@@ -71,8 +71,24 @@ public class PetController {
         return transformPetsEntitiesListToPetsDTOs(pets);
     }
 
+    private List<PetDTO> transformPetsEntitiesListToPetsDTO(List<Pet> pets) {
+        List<PetDTO> petsDTO = new ArrayList<>();
+        pets.forEach(pet -> {
+            petsDTO.add(new PetDTO(
+                    pet.getId(),
+                    pet.getType(),
+                    pet.getName(),
+                    pet.getOwner().getId(),
+                    pet.getBirthDate(),
+                    pet.getNotes()));
+        });
+        return petsDTO;
+    }
+
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        throw new UnsupportedOperationException();
+
+        // Find all pets by the provided owner id then transform the retrieved entity objects into DTO objects, then return in an http response.
+        return transformPetsEntitiesListToPetsDTO(petService.findPetsByOwner(ownerId));
     }
 }
