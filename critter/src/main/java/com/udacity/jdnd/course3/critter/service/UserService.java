@@ -55,4 +55,8 @@ public class UserService {
     public Employee save(Employee e) {
         return employeeRepository.save(e);
     }
+
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
 }

@@ -68,9 +68,18 @@ public class UserController {
         return dto;
     }
 
+    private List<CustomerDTO> transformCustomerEntityListToCustomerDTOs(List<Customer> customers) {
+        List dtos = new ArrayList<CustomerDTO>();
+        customers.forEach(customer -> {
+            dtos.add(this.transformCustomerEntityToCustomerDTO(customer));
+        });
+        return dtos;
+    }
+
     @GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers(){
-        throw new UnsupportedOperationException();
+        List<Customer> customers = userService.getAllCustomers();
+        return transformCustomerEntityListToCustomerDTOs(customers);
     }
 
     @GetMapping("/customer/pet/{petId}")
