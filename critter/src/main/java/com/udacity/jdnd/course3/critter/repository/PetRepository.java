@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Long> {
+
+    // This is equivalent to SELECT * from pets WHERE ownerId = <owner id that's passed in>
     List<Pet> findByOwnerId(Long ownerId);
 }
