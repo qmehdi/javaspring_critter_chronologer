@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -58,5 +59,20 @@ public class UserService {
 
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
+    }
+
+    public List<Employee> findEmployees(List<Long> employeeIds) throws RuntimeException {
+        List<Employee> employees = employeeRepository.findAllById(employeeIds);
+        if (employeeIds.size() != employees.size())
+        {
+            List<Long> found = employees.stream().map(e -> e.getId()).collect(Collectors.toList());
+            String missing = employeeIds
+                    .stream()
+                    .filter(id -> !found.contains(id))
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(", "));
+            throw new RuntimeException("Could not find employee(s) with id(s): " + missing);
+        }
+        return employees;
     }
 }
