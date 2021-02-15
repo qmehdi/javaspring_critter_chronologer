@@ -36,6 +36,11 @@ public class ScheduleService {
         return scheduleRepository.findByOwnersId(ownerId);
     }
 
+    // /employee/{employeeId}
+    public List<Schedule> findScheduleByEmployee(Long employeeId) {
+        return scheduleRepository.findByEmployeesId(employeeId);
+    }
+
     // As part of the save schedule operation, we have to update the records for employees and pets in their own tables, that's why there are three save operations.
     @Transactional
     public Schedule save(Schedule schedule) {

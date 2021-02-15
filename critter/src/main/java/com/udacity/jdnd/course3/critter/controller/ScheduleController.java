@@ -110,14 +110,15 @@ public class ScheduleController {
 
     @GetMapping("/employee/{employeeId}")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
-    }
-
-    @GetMapping("/customer/{customerId}")
-    public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        List<Schedule> schedules = scheduleService.findScheduleByOwner(customerId);
-
-        // Take the returned list of schedules (entities) and transform them to DTOs then return in an http response
+        List<Schedule> schedules = scheduleService.findScheduleByEmployee(employeeId);
         return transformScheduleEntitiesListToScheduleDTOs(schedules);
     }
+
+//    @GetMapping("/customer/{customerId}")
+//    public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
+//        List<Schedule> schedules = scheduleService.findScheduleByOwner(customerId);
+//
+//        // Take the returned list of schedules (entities) and transform them to DTOs then return in an http response
+//        return transformScheduleEntitiesListToScheduleDTOs(schedules);
+//    }
 }
