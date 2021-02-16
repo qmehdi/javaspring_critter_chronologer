@@ -109,9 +109,13 @@ public class UserController {
         throw new UnsupportedOperationException();
     }
 
+    // Accepts a list of days that the employee is available to work
+    // Overwrites the existing list of days that the employee has set in the database.
     @PutMapping("/employee/{employeeId}")
-    public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+    public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId)   {
+        Employee e = userService.findEmployee(employeeId).orElseThrow(() -> new RuntimeException("ID: " + employeeId));
+        e.setDaysAvailable(new ArrayList<>(daysAvailable));
+        userService.save(e);
     }
 
     @GetMapping("/employee/availability")
