@@ -104,9 +104,11 @@ public class UserController {
         return dto;
     }
 
-    @PostMapping("/employee/{employeeId}")
-    public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+    // This is not in the postman collection
+    @GetMapping("/employee/{employeeId}")
+    public EmployeeDTO getEmployee(@PathVariable long employeeId) throws RuntimeException {
+        Employee e = userService.findEmployee(employeeId).orElseThrow(() -> new RuntimeException("ID: " + employeeId));
+        return transformEmployeeEntityToDTO(e);
     }
 
     // Accepts a list of days that the employee is available to work
