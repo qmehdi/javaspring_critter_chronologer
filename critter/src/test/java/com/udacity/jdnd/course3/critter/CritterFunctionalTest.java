@@ -8,6 +8,8 @@ import com.udacity.jdnd.course3.critter.dto.*;
 import com.udacity.jdnd.course3.critter.entity.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.entity.PetType;
 import com.udacity.jdnd.course3.critter.controller.ScheduleController;
+import com.udacity.jdnd.course3.critter.exception.CustomerNotFoundException;
+import com.udacity.jdnd.course3.critter.exception.PetNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,7 @@ public class CritterFunctionalTest {
     private ScheduleController scheduleController;
 
     @Test
-    public void testCreateCustomer(){
+    public void testCreateCustomer() throws PetNotFoundException {
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
         CustomerDTO retrievedCustomer = userController.getAllCustomers().get(0);
@@ -63,7 +65,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testAddPetsToCustomer() {
+    public void testAddPetsToCustomer() throws PetNotFoundException {
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
@@ -88,7 +90,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testFindPetsByOwner() {
+    public void testFindPetsByOwner() throws PetNotFoundException {
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
@@ -106,7 +108,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testFindOwnerByPet() {
+    public void testFindOwnerByPet() throws PetNotFoundException {
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
@@ -170,7 +172,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testSchedulePetsForServiceWithEmployee() {
+    public void testSchedulePetsForServiceWithEmployee() throws PetNotFoundException {
         EmployeeDTO employeeTemp = createEmployeeDTO();
         employeeTemp.setDaysAvailable(Sets.newHashSet(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY));
         EmployeeDTO employeeDTO = userController.saveEmployee(employeeTemp);
@@ -194,7 +196,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testFindScheduleByEntities() {
+    public void testFindScheduleByEntities() throws PetNotFoundException {
         ScheduleDTO sched1 = populateSchedule(1, 2, LocalDate.of(2019, 12, 25), Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.WALKING));
         ScheduleDTO sched2 = populateSchedule(3, 1, LocalDate.of(2019, 12, 26), Sets.newHashSet(EmployeeSkill.PETTING));
 
@@ -277,7 +279,7 @@ public class CritterFunctionalTest {
         return scheduleDTO;
     }
 
-    private ScheduleDTO populateSchedule(int numEmployees, int numPets, LocalDate date, Set<EmployeeSkill> activities) {
+    private ScheduleDTO populateSchedule(int numEmployees, int numPets, LocalDate date, Set<EmployeeSkill> activities) throws PetNotFoundException {
         List<Long> employeeIds = IntStream.range(0, numEmployees)
                 .mapToObj(i -> createEmployeeDTO())
                 .map(e -> {
