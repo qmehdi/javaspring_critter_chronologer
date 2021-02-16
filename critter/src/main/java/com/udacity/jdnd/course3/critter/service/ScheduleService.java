@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,12 @@ public class ScheduleService {
 
     public List<Schedule> findScheduleByPet(Long petId) {
         return scheduleRepository.findByPetsId(petId);
+    }
+
+    public List<Schedule> findSchedulesForEmployee(long employeeId) {
+        Employee e = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new RuntimeException("ID: " + employeeId));
+        return (new ArrayList<>(e.getSchedules()));
     }
 
     // As part of the save schedule operation, we have to update the records for employees and pets in their own tables, that's why there are three save operations.
