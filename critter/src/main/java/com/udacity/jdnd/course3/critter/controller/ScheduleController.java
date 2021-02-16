@@ -55,21 +55,20 @@ public class ScheduleController {
 
     // List of scheduleDTOs
     private List<ScheduleDTO> transformScheduleEntitiesListToScheduleDTOs(List<Schedule> schedules) {
-        // This isn't working yet #################
-//        List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
-//        schedules.forEach(sch -> {
-//            scheduleDTOs.add(new ScheduleDTO(
-//                            sch.getId(),
-//                            new ArrayList(sch.getEmployees()),
-//                            new ArrayList(sch.getPets()),
-//                            sch.getDate(),
-//                            new HashSet<>(sch.getActivities())));
-//        });
-//
-//        return scheduleDTOs;
+        List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+        schedules.forEach(sch -> {
+            scheduleDTOs.add(new ScheduleDTO(
+                            sch.getId(),
+                            sch.getEmployees().stream().map(employee -> employee.getId()).collect(Collectors.toList()),
+                            sch.getPets().stream().map(pet -> pet.getId()).collect(Collectors.toList()),
+                            sch.getDate(),
+                            new HashSet<>(sch.getActivities())));
+        });
+
+        return scheduleDTOs;
 
         // This is another way to do it
-        return schedules.stream().map(s -> transformScheduleEntityToScheduleDTO(s)).collect(Collectors.toList());
+//         return schedules.stream().map(s -> transformScheduleEntityToScheduleDTO(s)).collect(Collectors.toList());
     }
 
     @PostMapping
