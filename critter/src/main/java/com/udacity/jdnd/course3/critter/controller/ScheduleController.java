@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.controller;
 
 import com.udacity.jdnd.course3.critter.dto.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.entity.Schedule;
+import com.udacity.jdnd.course3.critter.exception.CustomerNotFoundException;
 import com.udacity.jdnd.course3.critter.exception.PetNotFoundException;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.service.ScheduleService;
@@ -114,7 +115,8 @@ public class ScheduleController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        throw new UnsupportedOperationException();
+    public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) throws CustomerNotFoundException
+    {
+        return transformScheduleEntitiesListToScheduleDTOs(scheduleService.findSchedulesForCustomer(customerId));
     }
 }
