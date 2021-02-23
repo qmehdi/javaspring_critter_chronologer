@@ -2,9 +2,11 @@ package com.udacity.jdnd.course3.critter.service;
 
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.entity.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.exception.PetNotFoundException;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
+import com.udacity.jdnd.course3.critter.repository.EmployeeManagedRepository;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +29,8 @@ public class UserService {
     private PetRepository petRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeManagedRepository employeeManagedRepository;
 
     // This is a wrapper method to simply make the findById method in the CrudRepository available to the controller. We put this here in the Service class because the controller should never talk to the Repository directly.
     public Optional<Customer> findCustomer(Long id) {
@@ -74,5 +80,10 @@ public class UserService {
             throw new RuntimeException("Could not find employee(s) with id(s): " + missing);
         }
         return employees;
+    }
+
+    public List<Employee> findAvailableEmployees(Set<EmployeeSkill> skills, LocalDate date) {
+        List<Long> employeesIds = employeeManagedRepository.findEmployeeIdsWithAllSkillsOnDay(skills, date.getDayOfWeek());
+        return employeeRepository.findAllById(employeesIds);
     }
 }
