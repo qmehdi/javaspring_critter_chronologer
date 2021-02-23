@@ -25,11 +25,17 @@ public class Employee
     private String name;
 
     @ElementCollection
-    @Enumerated(EnumType.STRING)
-    private List<EmployeeSkill> skills;
+    @CollectionTable(
+            name="employee_skill",
+            joinColumns = @JoinColumn(name="id"), uniqueConstraints = @UniqueConstraint(columnNames = {"ID", "SKILL"}))
+    @Column(name="skill")
+    private Set<EmployeeSkill> skills;
 
     @ElementCollection
-    @Enumerated(EnumType.STRING)
+    @CollectionTable(
+            name="day_of_week",
+            joinColumns = @JoinColumn(name="id"), uniqueConstraints = @UniqueConstraint(columnNames = {"ID", "DAY"}))
+    @Column(name="day")
     private List<DayOfWeek> daysAvailable;
 
     @ManyToMany(mappedBy = "pets")

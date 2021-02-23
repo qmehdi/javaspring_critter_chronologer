@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Handles web requests related to Users.
@@ -120,8 +121,12 @@ public class UserController {
         userService.save(e);
     }
 
+    // `Check Availability` (employee) Endpoint.
+    // This endpoint is used to figure out which employees are available given a skill and a date; for example, to find out which employees are available for pet feeding on 2021-2-21.
+    // In order for this endpoint to return the correct data, 1) hit Save Employee. 2) hit Add Employee Schedule.
     @GetMapping("/employee/availability")
-    public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+    public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeRequestDTO) {
+        List<Employee> employees = userService.findAvailableEmployees(employeeRequestDTO.getSkills(), employeeRequestDTO.getDate());
+        return employees.stream().map(this::transformEmployeeEntityToDTO).collect(Collectors.toList());
     }
 }
