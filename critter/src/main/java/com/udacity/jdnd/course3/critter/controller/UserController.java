@@ -11,13 +11,11 @@ import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -102,6 +100,11 @@ public class UserController {
     private EmployeeDTO transformEmployeeEntityToDTO(Employee employee) {
         EmployeeDTO dto = new EmployeeDTO();
         BeanUtils.copyProperties(employee, dto);
+
+        // // //
+//        if(!CollectionUtils.isEmpty(employee.getDaysAvailable())) {
+//            dto.setDaysAvailable(new HashSet<>(employee.getDaysAvailable()));
+//        }
         return dto;
     }
 
@@ -117,7 +120,7 @@ public class UserController {
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId)   {
         Employee e = userService.findEmployee(employeeId).orElseThrow(() -> new RuntimeException("ID: " + employeeId));
-        e.setDaysAvailable(new ArrayList<>(daysAvailable));
+        e.setDaysAvailable(daysAvailable);
         userService.save(e);
     }
 
