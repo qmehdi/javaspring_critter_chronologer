@@ -26,36 +26,4 @@ public class ScheduleDTO {
     private List<Long> petIds = new ArrayList<>();
     private LocalDate date;
     private Set<EmployeeSkill> activities = new HashSet<>();
-
-//    public List<Long> getEmployeeIds() {
-//        return employeeIds;
-//    }
-//
-//    public void setEmployeeIds(List<Long> employeeIds) {
-//        this.employeeIds = employeeIds;
-//    }
-//
-//    public List<Long> getPetIds() {
-//        return petIds;
-//    }
-//
-//    public void setPetIds(List<Long> petIds) {
-//        this.petIds = petIds;
-//    }
-//
-//    public LocalDate getDate() {
-//        return date;
-//    }
-//
-//    public void setDate(LocalDate date) {
-//        this.date = date;
-//    }
-//
-//    public Set<EmployeeSkill> getActivities() {
-//        return activities;
-//    }
-//
-//    public void setActivities(Set<EmployeeSkill> activities) {
-//        this.activities = activities;
-//    }
 }

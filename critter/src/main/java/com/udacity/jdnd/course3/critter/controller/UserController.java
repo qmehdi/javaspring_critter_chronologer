@@ -100,11 +100,6 @@ public class UserController {
     private EmployeeDTO transformEmployeeEntityToDTO(Employee employee) {
         EmployeeDTO dto = new EmployeeDTO();
         BeanUtils.copyProperties(employee, dto);
-
-        // // //
-//        if(!CollectionUtils.isEmpty(employee.getDaysAvailable())) {
-//            dto.setDaysAvailable(new HashSet<>(employee.getDaysAvailable()));
-//        }
         return dto;
     }
 
