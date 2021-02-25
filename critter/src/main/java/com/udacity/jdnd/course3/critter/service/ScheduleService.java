@@ -5,6 +5,7 @@ import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.entity.Schedule;
 import com.udacity.jdnd.course3.critter.exception.CustomerNotFoundException;
+import com.udacity.jdnd.course3.critter.exception.PetNotFoundException;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
@@ -31,18 +32,27 @@ public class ScheduleService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    public List<Schedule> findAllSchedules() {
+        return scheduleRepository.findAll();
+    }
+
     public Optional<Schedule> findSchedule(Long id) {
         return scheduleRepository.findById(id);
     }
 
-    public List<Schedule> findScheduleByPet(Long petId) {
-        return scheduleRepository.findByPetsId(petId);
+    public List<Schedule> findSchedulesForPet(Long petId) throws PetNotFoundException {
+
+        // Find the pet using the given pet Id
+        Pet p = petRepository.findById(petId).orElseThrow(() -> new PetNotFoundException("ID: " + petId));
+
+        // Return only the schedules list from the pet entity
+        return (List<Schedule>) p.getSchedules();
     }
 
     public List<Schedule> findSchedulesForEmployee(long employeeId) {
         Employee e = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("ID: " + employeeId));
-        return (new ArrayList<>(e.getSchedules()));
+        return e.getSchedules();
     }
 
     public List<Schedule> findSchedulesForCustomer(long customerId) throws CustomerNotFoundException {

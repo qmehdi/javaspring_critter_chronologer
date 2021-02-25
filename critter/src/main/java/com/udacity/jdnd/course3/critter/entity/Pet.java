@@ -10,7 +10,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -38,6 +40,6 @@ public class Pet
 
     @ManyToMany(mappedBy = "pets")
     @JsonManagedReference
-    private Set<Schedule> schedules = new HashSet<>();
+    private List<Schedule> schedules = new ArrayList<>();
 }
 

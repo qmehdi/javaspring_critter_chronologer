@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.controller;
 import com.udacity.jdnd.course3.critter.dto.PetDTO;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.exception.CustomerNotFoundException;
+import com.udacity.jdnd.course3.critter.exception.PetNotFoundException;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,12 @@ public class PetController {
     }
 
     @GetMapping("/{petId}")
-    public PetDTO getPet(@PathVariable long petId) {
-        throw new UnsupportedOperationException();
+    public PetDTO getPet(@PathVariable long petId) throws PetNotFoundException {
+        PetDTO dto = new PetDTO();
+        Pet p = petService.findPet(petId).orElseThrow(() -> new PetNotFoundException("ID: " + petId));
+        BeanUtils.copyProperties(p, dto);
+        dto.setOwnerId(p.getOwner().getId());
+        return dto;
     }
 
     private List<PetDTO> transformPetsEntitiesListToPetsDTOs(List<Pet> pets) {

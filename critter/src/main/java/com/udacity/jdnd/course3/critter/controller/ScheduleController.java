@@ -97,15 +97,21 @@ public class ScheduleController {
 
     @GetMapping
     public List<ScheduleDTO> getAllSchedules() {
-        throw new UnsupportedOperationException();
+        List<Schedule> schedules = scheduleService.findAllSchedules();
+        return transformScheduleEntitiesListToScheduleDTOs(schedules);
     }
 
+    // Returns list of schedules for the given petId
     @GetMapping("/pet/{petId}")
-    public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
+    public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) throws PetNotFoundException {
 
-        // The findScheduleByPet only takes in a single pet Id and returns a list of schedules
-        List<Schedule> schedules = scheduleService.findScheduleByPet(petId);
-        return transformScheduleEntitiesListToScheduleDTOs(schedules);
+//        // The findScheduleByPet only takes in a single pet Id and returns a list of schedules
+//        List<Schedule> schedules = scheduleService.findScheduleByPet(petId);
+
+        // First, find the pet entity using the given petId
+//        Pet p = petService.
+
+        return transformScheduleEntitiesListToScheduleDTOs(scheduleService.findSchedulesForPet(petId));
     }
 
     @GetMapping("/employee/{employeeId}")

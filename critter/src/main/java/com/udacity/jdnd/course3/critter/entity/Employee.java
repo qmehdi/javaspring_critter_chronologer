@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,9 +52,9 @@ public class Employee
             name="day_of_week",
             joinColumns = @JoinColumn(name="id"), uniqueConstraints = @UniqueConstraint(columnNames = {"ID", "DAY"}))
     @Column(name="day")
-    private List<DayOfWeek> daysAvailable;
+    private Set<DayOfWeek> daysAvailable;
 
     @ManyToMany(mappedBy = "pets")
     @JsonManagedReference
-    private Set<Schedule> schedules = new HashSet<>();
+    private List<Schedule> schedules = new ArrayList<>();
 }
